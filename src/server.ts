@@ -1,15 +1,30 @@
 import app from "./app.js";
 const PORT = process.env.PORT || 3000;
 
-function initServer() {
-  try {
-    app.listen(PORT, () =>
-      console.log(`Server is running on  https://localhost:${PORT}`)
-    );
-  } catch (error: any) {
-    console.error("Failed to start server: ", error);
-    process.exit(1);
-  }
-}
+/**
+ * Starts the server and listens on the specified port.
+ * @returns {<void>}
+ */
+export function startServer(): void {
+  const server = app.listen(PORT, () => {
+    console.log(`Server is running on https://localhost:${PORT}`);
+  });
 
-export default initServer;
+  //Graceful shutdown
+  const shutdown = (signal: string) => {
+    console.log(`Received ${signal}. Shutting down gracefully...`);
+    server.close(() => {
+      console.log("Server closed.");
+      process.exit(0);
+    });
+
+    // Optional: Force shutdown after a timeout
+    setTimeout(() => {
+      console.error("Forcing shutting down after timeout");
+      process.exit(1);
+    }, 10000); // 10 seconds
+  };
+
+  process.on("SIGINT", () => shutdown("SIGINT"));
+  process.on("SIGTERM", () => shutdown("SIGTERM"));
+}

@@ -1,4 +1,4 @@
 import "./errors/global-handler.js";
-import server from "./server.js";
+import { startServer } from "./server.js";
 
-server();
+startServer();
