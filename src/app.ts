@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
+import cookieParser from "cookie-parser";
 
 import { errorHandler } from "./middlewares/error-handler.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -24,6 +25,7 @@ app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 /**
  * *  Compression Middleware
