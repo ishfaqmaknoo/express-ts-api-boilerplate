@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import AppError from "../utils/app-error.js";
+import config from "../config.js";
+import { DEFAULT_NODE_ENV } from "../constants/common.js";
 
 export function errorHandler(
   err: AppError | Error,
@@ -7,7 +9,7 @@ export function errorHandler(
   res: Response,
   _next: NextFunction
 ): void {
-  const isDev = process.env.NODE_ENV === "development";
+  const isDev = config.nodeEnv === DEFAULT_NODE_ENV;
 
   const statusCode = (err instanceof AppError && err.statusCode) || 500;
   const message =

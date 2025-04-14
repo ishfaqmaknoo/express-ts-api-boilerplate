@@ -1,5 +1,6 @@
 import app from "./app.js";
-const PORT = process.env.PORT || 3000;
+import config from "./config.js";
+const PORT = config.port;
 
 /**
  * Starts the server and listens on the specified port.
