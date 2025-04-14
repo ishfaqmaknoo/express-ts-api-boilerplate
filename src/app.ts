@@ -6,7 +6,7 @@ import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 
 import { errorHandler } from "./middlewares/error-handler.js";
-import authRoutes from "./routes/auth.routes.js";
+import routes from "./routes/index.js";
 
 const app = express();
 
@@ -22,7 +22,6 @@ app.use(cors());
 /**
  *  Builtin Middlewares
  */
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -63,25 +62,14 @@ app.use(limiter);
  *
  * Routes
  */
-
-app.use("/api/auth", authRoutes);
-
-// Health Check Route
-app.get("/health", (_req: Request, res: Response) => {
-  res.status(200).json({ status: "ok" });
-});
+app.use("/api", routes);
 
 // 404 handler (for undefined routes)
-app.use((_req: Request, res: Response) => {
-  res.status(404).json({
-    message: "Route not found",
-  });
-});
+app.use(routes);
 
 /**
  *  Error Middleware
  */
-
 app.use(errorHandler);
 
 export default app;
